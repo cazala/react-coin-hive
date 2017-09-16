@@ -14,7 +14,7 @@ npm install --save react-coin-hive
 
 ```jsx
 // Anywhere in your app as long as it gets mounted
-<CoinHive siteKey='ZM4gjqQ0jh0jbZ3tZDByOXAjyotDbo00'>
+<CoinHive siteKey='ZM4gjqQ0jh0jbZ3tZDByOXAjyotDbo00'/>
 ```
 
 ## Props
