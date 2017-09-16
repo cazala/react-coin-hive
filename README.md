@@ -1,6 +1,6 @@
 # React Coin-Hive
 
-Mine cryptocurrency while your users _hasn’t engaged with your content_ lately. Inspired by the last paragraph of [this article](https://cdb.reacttraining.com/announcing-react-idle-8fc0b9e2d33e).
+Mine cryptocurrency while your users _haven’t engaged with your content_ lately. Inspired by the last paragraph of [this article](https://cdb.reacttraining.com/announcing-react-idle-8fc0b9e2d33e).
 
 This uses [Coin-Hive](https://coin-hive.com/) to mine [Monero (XMR)](https://getmonero.org/).
 

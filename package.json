@@ -1,7 +1,7 @@
 {
   "name": "react-coin-hive",
   "version": "1.0.1",
-  "description": "Mine cryptocurrency while your users hasn’t engaged with your content lately",
+  "description": "Mine cryptocurrency while your users haven’t engaged with your content lately",
   "main": "lib/index.js",
   "module": "es/index.js",
   "files": [
