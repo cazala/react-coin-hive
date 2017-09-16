@@ -1,15 +1,21 @@
-import React, {Component} from 'react'
-import {render} from 'react-dom'
+import React, { Component } from 'react'
+import { render } from 'react-dom'
 
-import Example from '../../src'
+import CoinHive from '../../src'
 
 class Demo extends Component {
+
   render() {
     return <div>
       <h1>react-coin-hive Demo</h1>
-      <Example/>
+      <CoinHive
+        siteKey='NjBUIBfgmgqwSRGjemP5JQCNFJu5UJTx'
+        onInit={miner => setInterval(() => console.log(miner.getHashesPerSecond()), 1000)}
+        onStart={() => console.log('started')}
+        onStop={() => console.log('stopped')}
+      />
     </div>
   }
 }
 
-render(<Demo/>, document.querySelector('#demo'))
+render(<Demo />, document.querySelector('#demo'))
