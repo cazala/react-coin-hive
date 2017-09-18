@@ -38,7 +38,10 @@ class CoinHiveClient extends Component {
   async componentWillMount() {
     this.miner = await new Promise(resolve => {
       loadScript('https://coin-hive.com/lib/coinhive.min.js', () => {
-        resolve(CoinHive.Anonymous(this.props.siteKey));
+        if (this.props.userName) {
+          return resolve(CoinHive.User(this.props.siteKey, this.props.userName));
+        }
+        return resolve(CoinHive.Anonymous(this.props.siteKey));
       })
     })
     this.handleProps(this.props);
@@ -85,6 +88,7 @@ CoinHiveClient.PropTypes = {
   onInit: PropTypes.func,
   onStart: PropTypes.func,
   onStop: PropTypes.func,
+  userName: PropTypes.string,
 };
 
 export default CoinHiveClient;
