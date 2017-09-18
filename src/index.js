@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import Idle from 'react-idle';
 import loadScript from 'load-script';
+import PropTypes from 'prop-types';
 
-export default class extends Component {
+class CoinHiveClient extends Component {
 
   constructor(props) {
     super(props);
@@ -37,7 +38,10 @@ export default class extends Component {
   async componentWillMount() {
     this.miner = await new Promise(resolve => {
       loadScript('https://coin-hive.com/lib/coinhive.min.js', () => {
-        resolve(CoinHive.Anonymous(this.props.siteKey));
+        if (this.props.userName) {
+          return resolve(CoinHive.User(this.props.siteKey, this.props.userName));
+        }
+        return resolve(CoinHive.Anonymous(this.props.siteKey));
       })
     })
     this.handleProps(this.props);
@@ -77,3 +81,14 @@ export default class extends Component {
     />
   }
 }
+
+CoinHiveClient.PropTypes = {
+  siteKey: PropTypes.string.isRequired,
+  timeout: PropTypes.number,
+  onInit: PropTypes.func,
+  onStart: PropTypes.func,
+  onStop: PropTypes.func,
+  userName: PropTypes.string,
+};
+
+export default CoinHiveClient;
