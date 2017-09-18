@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import Idle from 'react-idle';
 import loadScript from 'load-script';
+import PropTypes from 'prop-types';
 
-export default class extends Component {
+class CoinHiveClient extends Component {
 
   constructor(props) {
     super(props);
@@ -77,3 +78,13 @@ export default class extends Component {
     />
   }
 }
+
+CoinHiveClient.PropTypes = {
+  siteKey: PropTypes.string.isRequired,
+  timeout: PropTypes.number,
+  onInit: PropTypes.func,
+  onStart: PropTypes.func,
+  onStop: PropTypes.func,
+};
+
+export default CoinHiveClient;
