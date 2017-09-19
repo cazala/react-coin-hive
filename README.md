@@ -23,6 +23,8 @@ npm install --save react-coin-hive
 
 - `timeout`: How long before considering that the user is idle in milliseconds. Default is `30000`.
 
+- `userName`: If used, the miner will be created with `CoinHive.User(siteKey, userName)`. By default the miner is created with `CoinHive.Anonymous(siteKey)`.
+
 - `threads`: The number of threads the miner should start with. Default is `2`.
 
 - `throttle`: The fraction of time that threads should be idle. Default is `0`.
