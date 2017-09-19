@@ -12,7 +12,7 @@ class CoinHiveClient extends Component {
   }
 
   static defaultProps = {
-    timeout: 1000,
+    timeout: 30000,
     threads: 2,
     throttle: 0,
     siteKey: 'NjBUIBfgmgqwSRGjemP5JQCNFJu5UJTx',
